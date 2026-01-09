@@ -1,11 +1,20 @@
-def count_ways_to_summit(n: int) -> int:
-    # Base cases
+def count_ways_to_summit(n: int, memo=None) -> int:
+    if memo is None:
+        memo = {}
+    
+    # base cases
     if n == 1:
         return 1
     if n == 2:
         return 2
-    # Recursive case
-    return count_ways_to_summit(n - 1) + count_ways_to_summit(n - 2)
+    
+    # Check for already calculated
+    if n in memo:
+        return memo[n]
+    
+    # Recursive case with memoization
+    memo[n] = count_ways_to_summit(n - 1, memo) + count_ways_to_summit(n - 2, memo)
+    return memo[n]
 
 
 # Test cases
@@ -24,8 +33,12 @@ def test_count_ways_to_summit():
     assert count_ways_to_summit(7) == 21, "Failed: n=7"
     assert count_ways_to_summit(10) == 89, "Failed: n=10"
     
+    # larger values 
+    assert count_ways_to_summit(20) == 10946, "Failed: n=20"
+    assert count_ways_to_summit(30) == 1346269, "Failed: n=30"
+    
     print("All test cases passed!")
 
 
-# Run the tests
+
 test_count_ways_to_summit()
